@@ -33,11 +33,13 @@ public class ChatServer {
                 System.out.println("Connection made with " + socket.getInetAddress());
 
                 Chat chat = new Chat(socket);
-                Thread thread = new Thread(chat);
+                ReadThread rThread = new ReadThread(socket);
+                WriteThread wThread = new WriteThread(socket);
+                Thread firstThread = new Thread(chat);
+                Thread thread = new Thread(rThread);
                 thread.start();
             }
 
-            System.out.println("Connection cut with " + serverSocket.getInetAddress());
             serverSocket.close();
 
         } catch (IOException e) {
@@ -72,7 +74,16 @@ public class ChatServer {
                 pw = new PrintWriter(socket.getOutputStream(), true);
                 br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                pw.println("Hello World!");
+                pw.println("Welcome to the chat server!");
+                pw.println("All messages sent will be broadcasted to the server and any connected clients.");
+                pw.println("==============================================================================");
+
+                String serverResponse = "";
+                while (serverResponse != null) {
+                    serverResponse = br.readLine();
+                    System.out.println(serverResponse);
+                }
+
             } catch (IOException e) {
                 System.err.println("Server error with messaging platform");
             }

@@ -15,27 +15,14 @@ public class ChatClient {
 
     public void startClient() {
         Socket socket = null;
-        Scanner keyboardInput = new Scanner(System.in);
+        Scanner scannedInput = new Scanner(System.in);
 
         try {
             socket = new Socket(HOST_NAME, HOST_PORT);
+            System.out.println("Client connected to server " + socket.getInetAddress());
         } catch (IOException e) {
             System.err.println("Client could not make connection : " + e);
             System.exit(-1);
-        }
-
-        PrintWriter pw;
-        BufferedReader br;
-
-        try {
-            pw = new PrintWriter(socket.getOutputStream(), true);
-            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            String serverResponse = br.readLine();
-            System.out.println(serverResponse);
-
-        } catch (IOException e) {
-
         }
     }
 
