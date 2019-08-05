@@ -32,12 +32,17 @@ public class ChatServer {
                 Socket socket = serverSocket.accept();
                 System.out.println("Connection made with " + socket.getInetAddress());
 
-                Chat chat = new Chat(socket);
+                ChatThread cThread = new ChatThread(socket);
+                Thread chat = new Thread(cThread);
+                chat.start();
+
                 ReadThread rThread = new ReadThread(socket);
+                Thread read = new Thread(rThread);
+                read.start();
+
                 WriteThread wThread = new WriteThread(socket);
-                Thread firstThread = new Thread(chat);
-                Thread thread = new Thread(rThread);
-                thread.start();
+                Thread write = new Thread(wThread);
+                write.start();
             }
 
             serverSocket.close();
@@ -58,10 +63,10 @@ public class ChatServer {
         cs.startServer();
     }
 
-    private class Chat implements Runnable {
+    private class ChatThread implements Runnable {
         private Socket socket;
         
-        public Chat(Socket socket) {
+        public ChatThread(Socket socket) {
             this.socket = socket;
         }
         

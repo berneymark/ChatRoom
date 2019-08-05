@@ -1,9 +1,5 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class ChatClient {
     public static final String HOST_NAME = "localhost";
@@ -15,7 +11,6 @@ public class ChatClient {
 
     public void startClient() {
         Socket socket = null;
-        Scanner scannedInput = new Scanner(System.in);
 
         try {
             socket = new Socket(HOST_NAME, HOST_PORT);
