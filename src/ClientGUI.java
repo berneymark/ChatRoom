@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class ClientGUI {
@@ -13,6 +12,8 @@ public class ClientGUI {
     private JPanel sendMessageToolbarPanel;
     private JTextField sendMessageField;
 
+    private String clientUsername;
+
     public ClientGUI() {
         GUIInit();
         setChatPanel();
@@ -20,6 +21,8 @@ public class ClientGUI {
         setSendMessageToolbar();
         setConnectionPanel();
         frame.setVisible(true);
+
+        clientUsername = JOptionPane.showInputDialog(null, "Username:");
     }
 
     private void GUIInit() {
@@ -37,13 +40,11 @@ public class ClientGUI {
         chatPanel = new JPanel();
         chatPanel.setLayout(new BorderLayout());
         chatPanel.setPreferredSize(new Dimension(600, 600));
-        chatPanel.setBackground(Color.YELLOW);
         parentPanel.add(chatPanel, BorderLayout.WEST);
     }
     
     private void setChatToolBar() {
         chatToolbarPanel = new JPanel();
-        chatToolbarPanel.setBackground(Color.RED);
         chatPanel.add(chatToolbarPanel, BorderLayout.NORTH);
 
         appTitle = new JLabel("Chat Room");
@@ -64,8 +65,8 @@ public class ClientGUI {
 
     private void setConnectionPanel() {
         connectionPanel = new JPanel();
+        connectionPanel.setBackground(Color.GRAY);
         connectionPanel.setPreferredSize(new Dimension(300, 600));
-        connectionPanel.setBackground(Color.GREEN);
         parentPanel.add(connectionPanel, BorderLayout.EAST);
     }
 
