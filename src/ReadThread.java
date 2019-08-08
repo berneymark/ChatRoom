@@ -6,12 +6,12 @@ import java.net.Socket;
 
 public class ReadThread implements Runnable {
     private BufferedReader reader;
-    private ChatClient server;
+    private ChatClient client;
     private Socket socket;
 
-    public ReadThread(Socket socket, ChatClient server) {
+    public ReadThread(Socket socket, ChatClient client) {
         this.socket = socket;
-        this.server = server;
+        this.client = client;
 
         try {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -25,8 +25,7 @@ public class ReadThread implements Runnable {
         while (true) {
             try {
                 String serverResponse = reader.readLine();
-
-                if (serverResponse != null) {
+                if (!serverResponse.startsWith("[" + client.getUsername() + "]:")) {
                     System.out.println(serverResponse);
                 }
             } catch (IOException e) {

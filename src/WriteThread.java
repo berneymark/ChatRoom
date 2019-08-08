@@ -7,18 +7,19 @@ import java.util.Scanner;
 public class WriteThread implements Runnable {
     private PrintWriter writer;
     private Scanner scanner;
-    private ChatClient server;
+    private ChatClient client;
     private Socket socket;
 
-    public WriteThread(Socket socket, ChatClient server) {
+    public WriteThread(Socket socket, ChatClient client) {
         this.socket = socket;
-        this.server = server;
+        this.client = client;
         scanner = new Scanner(System.in);
 
         try {
             writer = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
-            System.err.println("Error sending message");
+            System.err.println("Error getting output stream: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -26,8 +27,15 @@ public class WriteThread implements Runnable {
     public void run() {
         String scannedInput;
         do {
-            scannedInput = scanner.nextLine();
-            writer.println(scannedInput);
+            if (client.getUsername() == null) {
+                System.out.print("SELECT USERNAME: ");
+                scannedInput = scanner.nextLine();
+                client.setUsername(scannedInput);
+            } else {
+                System.out.print("ENTER MESSAGE: ");
+                scannedInput = scanner.nextLine();
+                writer.println(scannedInput);
+            }
         } while (!scannedInput.equals("QUIT"));
 
         try {

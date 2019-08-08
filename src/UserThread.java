@@ -4,10 +4,7 @@ import java.net.Socket;
 public class UserThread implements Runnable {
     private ChatServer server;
     private Socket socket;
-
     private PrintWriter writer;
-    private Thread inputThread;
-    private Thread outputThread;
 
     private String username;
 
@@ -46,14 +43,14 @@ public class UserThread implements Runnable {
             String username = reader.readLine();
             server.addUser(username);
 
-            String serverMessage;
-            String clientMessage;
+            String serverMessage = "";
+            String clientMessage = "";
 
             do {
                 clientMessage = reader.readLine();
                 serverMessage = "[" + username + "]: " + clientMessage;
                 sendMessage(serverMessage);
-            } while (clientMessage.equals("QUIT"));
+            } while (!clientMessage.equals("QUIT"));
 
             sendMessage(username + " has quit.");
 

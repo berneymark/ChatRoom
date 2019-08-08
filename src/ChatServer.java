@@ -29,11 +29,11 @@ public class ChatServer {
                 Socket socket = serverSocket.accept();
                 System.out.println("Connection made with " + socket.getInetAddress());
 
-                Scanner requestInput = new Scanner(System.in);
-                String request = requestInput.nextLine();
-                if (request.equals("STOP")) {
-                    requestStop();
-                }
+                UserThread newUser = new UserThread(this, socket);
+                userThreads.add(newUser);
+
+                Thread newUserThread = new Thread(newUser);
+                newUserThread.start();
             }
 
             serverSocket.close();
