@@ -7,10 +7,10 @@ import java.util.Scanner;
 public class WriteThread implements Runnable {
     private PrintWriter writer;
     private Scanner scanner;
-    private ChatServer server;
+    private ChatClient server;
     private Socket socket;
 
-    public WriteThread(Socket socket, ChatServer server) {
+    public WriteThread(Socket socket, ChatClient server) {
         this.socket = socket;
         this.server = server;
         scanner = new Scanner(System.in);

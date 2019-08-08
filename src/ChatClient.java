@@ -1,24 +1,42 @@
 import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class ChatClient {
     public static final String HOST_NAME = "localhost";
     public static final int HOST_PORT = 7777;
+
+    private Thread inputThread;
+    private Thread outputThread;
+
+    private String username;
 
     public ChatClient() {
 
     }
 
     public void startClient() {
-        Socket socket = null;
-
         try {
-            socket = new Socket(HOST_NAME, HOST_PORT);
+            Socket socket = new Socket(HOST_NAME, HOST_PORT);
             System.out.println("Client connected to server " + socket.getInetAddress());
+
+            inputThread = new Thread(new ReadThread(socket, this));
+            inputThread.start();
+
+            outputThread = new Thread(new WriteThread(socket, this));
+            outputThread.start();
+
         } catch (IOException e) {
-            System.err.println("Client could not make connection : " + e);
-            System.exit(-1);
+            System.err.println("IOException : " + e.getMessage());
         }
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public static void main(String[] args) {

@@ -30,10 +30,10 @@ public class UserThread implements Runnable {
 
     @Override
     public void run() {
-        inputThread = new Thread(new ReadThread(socket, server));
-        inputThread.start();
+        //inputThread = new Thread(new ReadThread(socket, server));
+        //inputThread.start();
 
-        outputThread = new Thread(new WriteThread(socket, server));
-        outputThread.start();
+        //outputThread = new Thread(new WriteThread(socket, server));
+        //outputThread.start();
     }
 }
