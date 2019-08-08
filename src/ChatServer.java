@@ -31,18 +31,6 @@ public class ChatServer {
             while (!stopRequested) {
                 Socket socket = serverSocket.accept();
                 System.out.println("Connection made with " + socket.getInetAddress());
-
-                ChatThread cThread = new ChatThread(socket);
-                Thread chat = new Thread(cThread);
-                chat.start();
-
-                ReadThread rThread = new ReadThread(socket);
-                Thread read = new Thread(rThread);
-                read.start();
-
-                WriteThread wThread = new WriteThread(socket);
-                Thread write = new Thread(wThread);
-                write.start();
             }
 
             serverSocket.close();

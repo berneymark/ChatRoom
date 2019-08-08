@@ -22,6 +22,8 @@ public class ClientGUI {
         setConnectionPanel();
         frame.setVisible(true);
 
+        ChatClient chat = new ChatClient();
+        chat.startClient();
         clientUsername = JOptionPane.showInputDialog(null, "Username:");
     }
 
