@@ -6,10 +6,10 @@ import java.net.Socket;
 
 public class ReadThread implements Runnable {
     private BufferedReader reader;
-    private ChatServer server;
+    private ChatClient server;
     private Socket socket;
 
-    public ReadThread(Socket socket, ChatServer server) {
+    public ReadThread(Socket socket, ChatClient server) {
         this.socket = socket;
         this.server = server;
 
