@@ -43,7 +43,7 @@ public class ChatServer {
             e.printStackTrace();
             System.exit(-1);
         }
-        
+
         System.out.println("Server finishing");
     }
 
