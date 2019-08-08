@@ -5,23 +5,33 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class UserThread implements Runnable {
-    private Socket socket;
     private ChatServer server;
-
-    private ReadThread read;
-    private WriteThread write;
+    private Socket socket;
 
     private Thread inputThread;
     private Thread outputThread;
 
-    public UserThread(Socket socket, ChatServer server) {
-        this.socket = socket;
+    private String username;
+
+    public UserThread(ChatServer server, Socket socket) {
         this.server = server;
+        this.socket = socket;
+    }
+
+    public void setUsername(String name) {
+        username = name;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     @Override
     public void run() {
         inputThread = new Thread(new ReadThread(socket, server));
+        inputThread.start();
+
         outputThread = new Thread(new WriteThread(socket, server));
+        outputThread.start();
     }
 }
