@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ClientGUI {
     private JButton sendMessageButton;
@@ -10,6 +12,7 @@ public class ClientGUI {
     private JPanel connectionPanel;
     private JPanel parentPanel;
     private JPanel sendMessageToolbarPanel;
+    private JTextArea conversationText;
     private JTextField sendMessageField;
 
     private String clientUsername;
@@ -18,6 +21,7 @@ public class ClientGUI {
         GUIInit();
         setChatPanel();
         setChatToolBar();
+        setConversationText();
         setSendMessageToolbar();
         setConnectionPanel();
         frame.setVisible(true);
@@ -51,6 +55,12 @@ public class ClientGUI {
         chatToolbarPanel.add(appTitle);
     }
 
+    private void setConversationText() {
+        conversationText = new JTextArea();
+        conversationText.setEditable(false);
+        chatPanel.add(conversationText, BorderLayout.CENTER);
+    }
+
     private void setSendMessageToolbar() {
         sendMessageToolbarPanel = new JPanel();
         chatPanel.add(sendMessageToolbarPanel, BorderLayout.SOUTH);
@@ -60,6 +70,7 @@ public class ClientGUI {
         sendMessageToolbarPanel.add(sendMessageField);
 
         sendMessageButton = new JButton("SEND");
+        sendMessageButton.addActionListener(new GUIActionListeners());
         sendMessageToolbarPanel.add(sendMessageButton);
     }
 
@@ -72,5 +83,21 @@ public class ClientGUI {
 
     public static void main(String[] args) {
         ClientGUI client = new ClientGUI();
+    }
+
+    private class GUIActionListeners implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == sendMessageButton) {
+                if (sendMessageField.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "This message is empty.");
+                } else if (sendMessageField.getText() == null) {
+                    JOptionPane.showMessageDialog(null, "This message null.");
+                } else {
+                    conversationText.setText(conversationText.getText() + "\n[" + clientUsername + "]: " + sendMessageField.getText());
+                    sendMessageField.setText("");
+                }
+            }
+        }
     }
 }
