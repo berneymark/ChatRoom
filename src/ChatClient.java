@@ -3,7 +3,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class ChatClient {
-    public static final String HOST_NAME = "localhost";
+    public static final String HOST_NAME = "172.28.28.9";
     public static final int HOST_PORT = 7777;
 
     private Thread inputThread;
@@ -28,6 +28,7 @@ public class ChatClient {
 
         } catch (IOException e) {
             System.err.println("IOException : " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

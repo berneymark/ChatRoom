@@ -3,6 +3,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 
 public class ChatServer {
@@ -27,6 +28,12 @@ public class ChatServer {
             while (!stopRequested) {
                 Socket socket = serverSocket.accept();
                 System.out.println("Connection made with " + socket.getInetAddress());
+
+                Scanner requestInput = new Scanner(System.in);
+                String request = requestInput.nextLine();
+                if (request.equals("STOP")) {
+                    requestStop();
+                }
             }
 
             serverSocket.close();
@@ -36,8 +43,7 @@ public class ChatServer {
             e.printStackTrace();
             System.exit(-1);
         }
-
-
+        
         System.out.println("Server finishing");
     }
 
