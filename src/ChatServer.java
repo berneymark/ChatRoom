@@ -1,4 +1,3 @@
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -59,7 +58,7 @@ public class ChatServer {
     }
 
     public boolean hasUsers() {
-        return !this.usernames.isEmpty();
+        return !usernames.isEmpty();
     }
 
     public void requestStop() {

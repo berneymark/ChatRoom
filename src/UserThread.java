@@ -22,6 +22,12 @@ public class UserThread implements Runnable {
         return username;
     }
 
+    public void getUsers() {
+        if (server.hasUsers()) {
+            System.out.println("Connected users: " + server.getUsernames());
+        } else System.out.println("No other users connected");
+    }
+
     @Override
     public void run() {
         inputThread = new Thread(new ReadThread(socket, server));
