@@ -11,6 +11,9 @@ public class UserThread implements Runnable {
     private ReadThread read;
     private WriteThread write;
 
+    private Thread inputThread;
+    private Thread outputThread;
+
     public UserThread(Socket socket, ChatServer server) {
         this.socket = socket;
         this.server = server;
@@ -18,6 +21,7 @@ public class UserThread implements Runnable {
 
     @Override
     public void run() {
-        
+        inputThread = new Thread(new ReadThread(socket, server));
+        outputThread = new Thread(new WriteThread(socket, server));
     }
 }

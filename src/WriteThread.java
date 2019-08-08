@@ -1,15 +1,18 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class WriteThread implements Runnable {
     private PrintWriter writer;
     private Scanner scanner;
+    private ChatServer server;
     private Socket socket;
 
-    public WriteThread(Socket socket) {
+    public WriteThread(Socket socket, ChatServer server) {
         this.socket = socket;
+        this.server = server;
         scanner = new Scanner(System.in);
 
         try {
