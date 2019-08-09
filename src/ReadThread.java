@@ -25,9 +25,9 @@ public class ReadThread implements Runnable {
         while (true) {
             try {
                 String serverResponse = reader.readLine();
-                if (!serverResponse.startsWith("[" + client.getUsername() + "]:")) {
-                    System.out.println(serverResponse);
-                }
+                if (serverResponse == null | serverResponse.equals("")) {
+                    System.out.println("empty string or null");
+                } else System.out.println(serverResponse);
             } catch (IOException e) {
                 System.err.println("Error receiving message: " + e);
                 break;

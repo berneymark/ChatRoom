@@ -30,11 +30,14 @@ public class WriteThread implements Runnable {
             if (client.getUsername() == null) {
                 System.out.print("SELECT USERNAME: ");
                 scannedInput = scanner.nextLine();
+                writer.println(scannedInput);
                 client.setUsername(scannedInput);
             } else {
                 System.out.print("ENTER MESSAGE: ");
                 scannedInput = scanner.nextLine();
-                writer.println(scannedInput);
+                if (!scannedInput.equals("") | scannedInput != null) {
+                    writer.println(scannedInput);
+                }
             }
         } while (!scannedInput.equals("QUIT"));
 

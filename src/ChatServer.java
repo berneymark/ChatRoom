@@ -27,13 +27,15 @@ public class ChatServer {
                     " on port " + PORT_NUMBER);
             while (!stopRequested) {
                 Socket socket = serverSocket.accept();
-                System.out.println("Connection made with " + socket.getInetAddress());
+                if (socket.isConnected()) {
+                    System.out.println("Connection made with " + socket.getInetAddress());
 
-                UserThread newUser = new UserThread(this, socket);
-                userThreads.add(newUser);
+                    UserThread newUser = new UserThread(this, socket);
+                    userThreads.add(newUser);
 
-                Thread newUserThread = new Thread(newUser);
-                newUserThread.start();
+                    Thread newUserThread = new Thread(newUser);
+                    newUserThread.start();
+                }
             }
 
             serverSocket.close();
@@ -45,6 +47,12 @@ public class ChatServer {
         }
 
         System.out.println("Server finishing");
+    }
+
+    public void broadcast(String message) {
+        for (UserThread user : userThreads) {
+            user.sendMessage(message);
+        }
     }
 
     public void addUser(String username) {

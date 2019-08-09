@@ -41,6 +41,7 @@ public class UserThread implements Runnable {
             writer = new PrintWriter(output, true);
 
             String username = reader.readLine();
+            setUsername(username);
             server.addUser(username);
 
             String serverMessage = "";
@@ -49,7 +50,7 @@ public class UserThread implements Runnable {
             do {
                 clientMessage = reader.readLine();
                 serverMessage = "[" + username + "]: " + clientMessage;
-                sendMessage(serverMessage);
+                server.broadcast(serverMessage);
             } while (!clientMessage.equals("QUIT"));
 
             sendMessage(username + " has quit.");
