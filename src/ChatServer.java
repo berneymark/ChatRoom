@@ -3,7 +3,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 
 public class ChatServer {
@@ -18,28 +17,20 @@ public class ChatServer {
     }
 
     public void startServer() {
-        ServerSocket serverSocket = null;
-
-        try {
-            serverSocket = new ServerSocket(PORT_NUMBER);
+        try (ServerSocket serverSocket  = new ServerSocket(PORT_NUMBER)){
             System.out.println("Server started at " +
                     InetAddress.getLocalHost() +
                     " on port " + PORT_NUMBER);
             while (!stopRequested) {
                 Socket socket = serverSocket.accept();
-                if (socket.isConnected()) {
-                    System.out.println("Connection made with " + socket.getInetAddress());
+                System.out.println("Connection made with " + socket.getInetAddress());
 
-                    UserThread newUser = new UserThread(this, socket);
-                    userThreads.add(newUser);
+                UserThread newUser = new UserThread(this, socket);
+                userThreads.add(newUser);
 
-                    Thread newUserThread = new Thread(newUser);
-                    newUserThread.start();
-                }
+                Thread newUserThread = new Thread(newUser);
+                newUserThread.start();
             }
-
-            serverSocket.close();
-
         } catch (IOException e) {
             System.err.println("Error in the server:  " + e.getMessage());
             e.printStackTrace();

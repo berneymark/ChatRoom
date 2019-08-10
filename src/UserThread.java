@@ -40,9 +40,9 @@ public class UserThread implements Runnable {
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
 
-            String username = reader.readLine();
-            setUsername(username);
-            server.addUser(username);
+            writer.print("Enter your username: ");
+            //String username = reader.readLine();
+            //System.out.println(username);
 
             String serverMessage = "";
             String clientMessage = "";
@@ -56,7 +56,6 @@ public class UserThread implements Runnable {
             sendMessage(username + " has quit.");
 
             server.removeUser(username, this);
-            socket.close();
         } catch (IOException e) {
             System.err.println("Error in UserThread: " + e.getMessage());
             e.printStackTrace();

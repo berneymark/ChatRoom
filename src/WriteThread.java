@@ -5,8 +5,6 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class WriteThread implements Runnable {
-    private ChatClient.ReadWriteLock lock = new ChatClient.ReadWriteLock();
-
     private PrintWriter writer;
     private Scanner scanner;
     private ChatClient client;
@@ -25,40 +23,26 @@ public class WriteThread implements Runnable {
         }
     }
 
+    public void sendServerMessage(String message) {
+        message = scanner.nextLine();
+        if (!message.equals("") | message != null) {
+            writer.println(message);
+        }
+    }
+
+    public void sendUserMessage(String message) {
+        System.out.print("Enter message: ");
+        message = scanner.nextLine();
+        if (!message.equals("") | message != null) {
+            writer.println(message);
+        }
+    }
+
     @Override
     public void run() {
         String scannedInput = "";
         do {
-            if (!client.isReading()) {
-                try {
-                    lock.acquireLock();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    if (client.getUsername() == null) {
-                        System.out.print("SELECT USERNAME: ");
-                        scannedInput = scanner.nextLine();
-                        writer.println(scannedInput);
-                        client.setUsername(scannedInput);
-                    } else {
-                        System.out.print("ENTER MESSAGE: ");
-                        scannedInput = scanner.nextLine();
-                        if (!scannedInput.equals("") | scannedInput != null) {
-                            writer.println(scannedInput);
-                        }
-                    }
-                } finally {
-                    lock.releaseLock();
-                }
-            }
+            sendUserMessage(scannedInput);
         } while (!scannedInput.equals("QUIT"));
-
-        try {
-            socket.close();
-        } catch (IOException e) {
-            System.err.println("Error closing socket");
-        }
     }
 }
