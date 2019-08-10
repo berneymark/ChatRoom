@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ReadThread implements Runnable {
+    private ChatClient.ReadWriteLock lock = new ChatClient.ReadWriteLock();
+
     private BufferedReader reader;
     private ChatClient client;
     private Socket socket;
@@ -24,6 +26,13 @@ public class ReadThread implements Runnable {
     public void run() {
         while (true) {
             try {
+                lock.acquireLock();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                client.reading(true);
                 String serverResponse = reader.readLine();
                 if (serverResponse == null | serverResponse.equals("")) {
                     System.out.println("empty string or null");
@@ -31,6 +40,9 @@ public class ReadThread implements Runnable {
             } catch (IOException e) {
                 System.err.println("Error receiving message: " + e);
                 break;
+            } finally {
+                client.reading(false);
+                lock.releaseLock();
             }
         }
     }

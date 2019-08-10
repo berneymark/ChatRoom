@@ -47,12 +47,20 @@ public class ChatClient {
         return username;
     }
 
+    public void reading(boolean reading) {
+        isReading = reading;
+    }
+
+    public boolean isReading() {
+        return isReading;
+    }
+
     public static void main(String[] args) {
         ChatClient chat = new ChatClient();
         chat.startClient();
     }
 
-    class ReadWriteLock {
+    static class ReadWriteLock {
         private boolean isLocked;
         private Thread currentLockOwner;
         private int lockedCount;
