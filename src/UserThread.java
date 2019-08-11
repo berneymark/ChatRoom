@@ -40,17 +40,18 @@ public class UserThread implements Runnable {
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
 
-            writer.print("Enter your username: ");
-            //String username = reader.readLine();
-            //System.out.println(username);
+            writer.println("Enter your username: ");
+            String username = reader.readLine();
 
             String serverMessage = "";
             String clientMessage = "";
 
             do {
                 clientMessage = reader.readLine();
-                serverMessage = "[" + username + "]: " + clientMessage;
-                server.broadcast(serverMessage);
+                if (!clientMessage.equals("QUIT")) {
+                    serverMessage = "[" + username + "]: " + clientMessage;
+                    server.broadcast(serverMessage);
+                }
             } while (!clientMessage.equals("QUIT"));
 
             sendMessage(username + " has quit.");

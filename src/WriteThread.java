@@ -31,7 +31,7 @@ public class WriteThread implements Runnable {
     }
 
     public void sendUserMessage(String message) {
-        System.out.print("Enter message: ");
+        System.out.print("[" + client.getUsername() + "]: ");
         message = scanner.nextLine();
         if (!message.equals("") | message != null) {
             writer.println(message);
@@ -42,7 +42,13 @@ public class WriteThread implements Runnable {
     public void run() {
         String scannedInput = "";
         do {
-            sendUserMessage(scannedInput);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                sendUserMessage(scannedInput);
+            }
         } while (!scannedInput.equals("QUIT"));
     }
 }

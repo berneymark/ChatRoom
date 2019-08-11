@@ -24,12 +24,9 @@ public class ReadThread implements Runnable {
         while (true) {
             try {
                 response = reader.readLine();
-                if (response.equals("Enter your username: ")) {
-                    System.out.print(response);
-                } else if (!response.equals("")) {
-                    System.out.println("\n" + response);
+                if (!response.equals("")) {
+                    System.out.println(response);
                 } else {
-                    System.out.println("broken");
                     break;
                 }
             } catch (IOException e) {

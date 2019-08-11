@@ -1,4 +1,7 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
@@ -21,6 +24,22 @@ public class ChatClient {
         try {
             Socket socket = new Socket(HOST_NAME, HOST_PORT);
             System.out.println("Connected to the server " + socket.getRemoteSocketAddress());
+
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream())
+            );
+            PrintWriter writer = new PrintWriter(
+                    socket.getOutputStream(),
+                    true
+            );
+            Scanner scanner = new Scanner(System.in);
+
+            String usernameRequest = reader.readLine();
+            System.out.println(usernameRequest);
+
+            String selectUsername = scanner.nextLine();
+            setUsername(selectUsername);
+            writer.println(selectUsername);
 
             inputThread = new Thread(new ReadThread(this, socket));
             inputThread.start();
