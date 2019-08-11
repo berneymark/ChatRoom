@@ -29,19 +29,24 @@ public class ChatClient {
             );
             Scanner scanner = new Scanner(System.in);
 
+            // PRINT CURRENTLY CONNECTED USERS FROM SERVER TO CLIENT
             String connectedClients = reader.readLine();
             System.out.println(connectedClients);
 
+            // PRINTS USERNAME REQUEST FROM SERVER TO CLIENT
             String usernameRequest = reader.readLine();
             System.out.println(usernameRequest);
 
+            // WRITES USERNAME TO SERVER FROM CLIENT
             String selectUsername = scanner.nextLine();
             setUsername(selectUsername);
             writer.println(selectUsername);
 
+            // PRINTS PEER REQUEST FROM SERVER TO CLIENT
             String conversationRequest = reader.readLine();
             System.out.println(conversationRequest);
 
+            // WRITES PEER USERNAME TO SERVER FROM CLIENT
             String selectConversation = scanner.nextLine();
             System.out.println("You have chosen to connect with: " + selectConversation);
             writer.println(selectConversation);

@@ -40,14 +40,20 @@ public class UserThread implements Runnable {
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
 
-
+            // WRITES CURRENTLY CONNECTED USERS FROM SERVER TO CLIENT
             writer.println(getConnectedUsers());
-            reader.readLine();
+
+            // WRITES USERNAME REQUEST FROM SERVER TO CLIENT
             writer.println("Enter your username: ");
+
+            // PRINTS USERNAME TO SERVER FROM CLIENT
             username = reader.readLine();
             System.out.println( username + " has joined the server.");
 
+            // WRITES PEER REQUEST FROM SERVER TO CLIENT
             writer.println("Enter the username of the person you wish to talk to: ");
+
+            // PRINTS PEER USERNAME TO SERVER FROM CLIENT
             String conversation = reader.readLine();
 
             String serverMessage = "";
