@@ -29,8 +29,8 @@ public class ChatClient {
             );
             Scanner scanner = new Scanner(System.in);
 
-            //String connectedClients = reader.readLine();
-            //System.out.println(connectedClients);
+            String connectedClients = reader.readLine();
+            System.out.println(connectedClients);
 
             String usernameRequest = reader.readLine();
             System.out.println(usernameRequest);

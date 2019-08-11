@@ -40,9 +40,9 @@ public class UserThread implements Runnable {
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
 
-            //writer.println(getConnectedUsers());
-            System.out.println(getConnectedUsers());
 
+            writer.println(getConnectedUsers());
+            reader.readLine();
             writer.println("Enter your username: ");
             username = reader.readLine();
             System.out.println( username + " has joined the server.");
