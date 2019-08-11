@@ -21,7 +21,7 @@ public class ReadThread implements Runnable {
     @Override
     public void run() {
         String response = "";
-        while (true) {
+        while (!response.equals("QUIT")) {
             try {
                 response = reader.readLine();
                 if (!response.equals("")) {

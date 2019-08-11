@@ -31,24 +31,27 @@ public class WriteThread implements Runnable {
     }
 
     public void sendUserMessage(String message) {
-        System.out.print("[" + client.getUsername() + "]: ");
-        message = scanner.nextLine();
-        if (!message.equals("") | message != null) {
-            writer.println(message);
-        }
+
     }
 
     @Override
     public void run() {
-        String scannedInput = "";
+        String message = "";
         do {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            } finally {
-                sendUserMessage(scannedInput);
             }
-        } while (!scannedInput.equals("QUIT"));
+
+            System.out.print("[" + client.getUsername() + "]: ");
+            message = scanner.nextLine();
+            if (!message.equals("") | message != null) {
+                writer.println(message);
+            }
+        } while (!message.equals("QUIT"));
+
+        System.out.println("Goodbye " + client.getUsername());
+        client.shutdownClient();
     }
 }

@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class ChatClient {
@@ -12,13 +11,9 @@ public class ChatClient {
 
     private Thread inputThread;
     private Thread outputThread;
-
-    private boolean isServerFinished;
     private String username;
 
-    public ChatClient() {
-        isServerFinished = false;
-    }
+    public ChatClient() {}
 
     public void startClient() {
         try {
@@ -46,11 +41,14 @@ public class ChatClient {
 
             outputThread = new Thread(new WriteThread(socket, this));
             outputThread.start();
-
         } catch (IOException e) {
             System.err.println("IOException : " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public void shutdownClient() {
+        System.exit(0);
     }
 
     public void setUsername(String username) {
@@ -59,14 +57,6 @@ public class ChatClient {
 
     public String getUsername() {
         return username;
-    }
-
-    public void setServerFinished(boolean reading) {
-        isServerFinished = reading;
-    }
-
-    public boolean isServerFinished() {
-        return isServerFinished;
     }
 
     public static void main(String[] args) {
