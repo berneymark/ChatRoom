@@ -43,8 +43,7 @@ public class WriteThread implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            System.out.print("[" + client.getUsername() + "]: ");
+            
             message = scanner.nextLine();
             if (!message.equals("") | message != null) {
                 writer.println(message);

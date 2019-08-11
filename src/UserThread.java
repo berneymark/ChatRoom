@@ -42,6 +42,7 @@ public class UserThread implements Runnable {
 
             writer.println("Enter your username: ");
             String username = reader.readLine();
+            System.out.println( username + " has joined the server.");
 
             String serverMessage = "";
             String clientMessage = "";
@@ -50,11 +51,12 @@ public class UserThread implements Runnable {
                 clientMessage = reader.readLine();
                 if (!clientMessage.equals("QUIT")) {
                     serverMessage = "[" + username + "]: " + clientMessage;
-                    server.broadcast(serverMessage);
+                    server.broadcast(serverMessage, this);
                 }
             } while (!clientMessage.equals("QUIT"));
 
-            sendMessage(username + " has quit.");
+            server.broadcast(username + " has quit.", this);
+            System.out.println(username + " has left the server.");
 
             server.removeUser(username, this);
         } catch (IOException e) {

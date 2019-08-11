@@ -40,9 +40,10 @@ public class ChatServer {
         System.out.println("Server finishing");
     }
 
-    public void broadcast(String message) {
+    public void broadcast(String message, UserThread exception) {
         for (UserThread user : userThreads) {
-            user.sendMessage(message);
+            if (user != exception)
+                user.sendMessage(message);
         }
     }
 
