@@ -21,10 +21,10 @@ public class UserThread implements Runnable {
         return username;
     }
 
-    public void getUsers() {
-        if (server.hasUsers()) {
-            System.out.println("Connected users: " + server.getUsernames());
-        } else System.out.println("No other users connected");
+    public String getConnectedUsers() {
+        if (server.hasUsers())
+            return "Connected users: " + server.getUsernames() + "\n";
+        else return "No other users connected\n";
     }
 
     public void sendMessage(String message) {
@@ -40,12 +40,20 @@ public class UserThread implements Runnable {
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
 
+            //writer.println(getConnectedUsers());
+            System.out.println(getConnectedUsers());
+
             writer.println("Enter your username: ");
-            String username = reader.readLine();
+            username = reader.readLine();
             System.out.println( username + " has joined the server.");
+
+            writer.println("Enter the username of the person you wish to talk to: ");
+            String conversation = reader.readLine();
 
             String serverMessage = "";
             String clientMessage = "";
+
+            server.addUser(this);
 
             do {
                 clientMessage = reader.readLine();
@@ -58,7 +66,7 @@ public class UserThread implements Runnable {
             server.broadcast(username + " has quit.", this);
             System.out.println(username + " has left the server.");
 
-            server.removeUser(username, this);
+            server.removeUser(this);
         } catch (IOException e) {
             System.err.println("Error in UserThread: " + e.getMessage());
             e.printStackTrace();

@@ -29,12 +29,22 @@ public class ChatClient {
             );
             Scanner scanner = new Scanner(System.in);
 
+            //String connectedClients = reader.readLine();
+            //System.out.println(connectedClients);
+
             String usernameRequest = reader.readLine();
             System.out.println(usernameRequest);
 
             String selectUsername = scanner.nextLine();
             setUsername(selectUsername);
             writer.println(selectUsername);
+
+            String conversationRequest = reader.readLine();
+            System.out.println(conversationRequest);
+
+            String selectConversation = scanner.nextLine();
+            System.out.println("You have chosen to connect with: " + selectConversation);
+            writer.println(selectConversation);
 
             inputThread = new Thread(new ReadThread(this, socket));
             inputThread.start();

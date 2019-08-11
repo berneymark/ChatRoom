@@ -9,7 +9,6 @@ public class ChatServer {
     public static final int PORT_NUMBER = 7777;
     private boolean stopRequested;
 
-    private Set<String> usernames = new HashSet<>();
     private Set<UserThread> userThreads = new HashSet<>();
 
     public ChatServer() {
@@ -26,8 +25,6 @@ public class ChatServer {
                 System.out.println("Connection made with " + socket.getInetAddress());
 
                 UserThread newUser = new UserThread(this, socket);
-                userThreads.add(newUser);
-
                 Thread newUserThread = new Thread(newUser);
                 newUserThread.start();
             }
@@ -47,24 +44,33 @@ public class ChatServer {
         }
     }
 
-    public void addUser(String username) {
-        usernames.add(username);
+    public void addUser(UserThread user) {
+        userThreads.add(user);
     }
 
-    public void removeUser(String username, UserThread user) {
-        boolean removed = usernames.remove(username);
-        if (removed) {
+    public void removeUser(UserThread user) {
+        if (userThreads.contains(user))
             userThreads.remove(user);
-            System.out.println("The user " + username + " has disconnected.");
-        }
-    }
-
-    public Set<String> getUsernames() {
-        return usernames;
     }
 
     public boolean hasUsers() {
-        return !usernames.isEmpty();
+        return !userThreads.isEmpty();
+    }
+
+    public Set<UserThread> getUsers() {
+        return userThreads;
+    }
+
+    public String getUsernames() {
+        String usernames = "";
+
+        for (UserThread user : getUsers()) {
+            usernames = usernames.concat(user.getUsername() + " ");
+        }
+
+        System.out.println(usernames);
+
+        return usernames;
     }
 
     public void requestStop() {
