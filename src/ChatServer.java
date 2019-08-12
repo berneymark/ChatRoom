@@ -2,21 +2,20 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 
 public class ChatServer {
     public static final int PORT_NUMBER = 7777;
     private boolean stopRequested;
 
-    private Set<UserThread> userThreads = new HashSet<>();
+    private LinkedList<UserThread> userThreads = new LinkedList<>();
 
     public ChatServer() {
         stopRequested = false;
     }
 
     public void startServer() {
-        try (ServerSocket serverSocket  = new ServerSocket(PORT_NUMBER)){
+        try (ServerSocket serverSocket  = new ServerSocket(PORT_NUMBER)) {
             System.out.println("Server started at " +
                     InetAddress.getLocalHost() +
                     " on port " + PORT_NUMBER);
@@ -57,18 +56,16 @@ public class ChatServer {
         return !userThreads.isEmpty();
     }
 
-    public Set<UserThread> getUsers() {
+    public LinkedList<UserThread> getUsers() {
         return userThreads;
     }
 
-    public String getUsernames() {
-        String usernames = "";
+    public String[] getUsernames() {
+        String[] usernames = new String[getUsers().size()];
 
-        for (UserThread user : getUsers()) {
-            usernames = usernames.concat(user.getUsername() + " ");
+        for (int i = 0; i < getUsers().size(); i++) {
+            usernames[i] = getUsers().get(i).getUsername();
         }
-
-        System.out.println(usernames);
 
         return usernames;
     }
