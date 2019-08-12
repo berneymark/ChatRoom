@@ -40,30 +40,23 @@ public class UserThread implements Runnable {
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
 
-            // WRITES USERNAME REQUEST FROM SERVER TO CLIENT
-            //writer.println("Enter your username: ");
-
-            // PRINTS USERNAME TO SERVER FROM CLIENT
             username = reader.readLine();
             System.out.println( username + " has joined the server.");
 
-            String serverMessage = "";
             String clientMessage = "";
 
             server.addUser(this);
 
             do {
                 clientMessage = reader.readLine();
-                if (!clientMessage.equals("QUIT")) {
-                    serverMessage = "[" + username + "]: " + clientMessage;
-                    server.broadcast(serverMessage, this);
-                }
-            } while (!clientMessage.equals("QUIT"));
+                server.broadcast(clientMessage + "\r\n", this);
+            } while (true);
 
-            server.broadcast(username + " has quit.", this);
-            System.out.println(username + " has left the server.");
 
-            server.removeUser(this);
+            //server.broadcast(username + " has quit.", this);
+            //System.out.println(username + " has left the server.");
+
+            //server.removeUser(this);
         } catch (IOException e) {
             System.err.println("Error in UserThread: " + e.getMessage());
             e.printStackTrace();

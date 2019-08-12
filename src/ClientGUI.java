@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class ClientGUI {
     private ChatClient client;
@@ -20,6 +22,7 @@ public class ClientGUI {
     private JTextField sendMessageField;
 
     private String clientUsername;
+    private PrintWriter writer;
     private String[] connectedUsers;
 
     public ClientGUI() {
@@ -35,6 +38,12 @@ public class ClientGUI {
         clientUsername = JOptionPane.showInputDialog(null, "Username:");
         ChatClient client = new ChatClient(this);
         client.startClient(clientUsername);
+
+        try {
+            writer = new PrintWriter(client.getSocket().getOutputStream(), true);
+        } catch (IOException e) {
+
+        }
     }
 
     private void GUIInit() {
@@ -42,6 +51,12 @@ public class ClientGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(900, 600);
         frame.getContentPane();
+
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation(
+                dim.width / 2 - frame.getSize().width / 2,
+                dim.height / 2 - frame.getSize().height / 2
+        );
 
         parentPanel = new JPanel();
         parentPanel.setLayout(new BorderLayout());
@@ -111,12 +126,8 @@ public class ClientGUI {
         return sendMessageButton;
     }
 
-    public void printToChat(String message, boolean readOrWrite) {
-        if (readOrWrite) {
-            conversationText.append(message + "\n");
-        } else {
-
-        }
+    public void printToChat(String message) {
+        conversationText.append("\r\n" + message);
     }
 
     public static void main(String[] args) {
@@ -132,8 +143,12 @@ public class ClientGUI {
                 } else if (sendMessageField.getText() == null) {
                     JOptionPane.showMessageDialog(null, "This message null.");
                 } else {
-                    conversationText.setText(conversationText.getText() + "\n[" + clientUsername + "]: " + sendMessageField.getText());
-                    sendMessageField.setText("");
+                    String message = sendMessageField.getText();
+                    conversationText.append(
+                            "\r\n" + "[" + clientUsername + "]: "
+                            + message);
+                    writer.println("[" + clientUsername + "]: " + message + "\r\n");
+                    sendMessageField.setText(null);
                 }
             }
         }
