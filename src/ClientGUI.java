@@ -4,22 +4,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ClientGUI {
-    private JButton sendMessageButton;
+    private ChatClient client;
+
     private JFrame frame;
-    private JLabel appTitle;
-    private JList conversationList;
     private JPanel chatPanel;
     private JPanel chatToolbarPanel;
     private JPanel conversationPanel;
     private JPanel parentPanel;
     private JPanel sendMessageToolbarPanel;
+
+    private JButton sendMessageButton;
+    private JLabel appTitle;
+    private JList conversationList;
     private JTextArea conversationText;
     private JTextField sendMessageField;
 
     private String clientUsername;
     private String[] connectedUsers;
 
-    public ClientGUI() {
+    public ClientGUI(ChatClient client) {
         GUIInit();
         setChatPanel();
         setChatToolBar();
@@ -29,7 +32,11 @@ public class ClientGUI {
         setConversationList();
         frame.setVisible(true);
 
+
+
         clientUsername = JOptionPane.showInputDialog(null, "Username:");
+        this.client = client;
+        client.startClient(this, clientUsername);
     }
 
     private void GUIInit() {
@@ -94,8 +101,12 @@ public class ClientGUI {
         conversationPanel.add(conversationList, BorderLayout.CENTER);
     }
 
+    private void getConnectedUsers() {
+
+    }
+
     public static void main(String[] args) {
-        ClientGUI client = new ClientGUI();
+        ClientGUI client = new ClientGUI(new ChatClient());
     }
 
     private class GUIActionListeners implements ActionListener {

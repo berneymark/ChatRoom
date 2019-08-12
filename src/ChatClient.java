@@ -15,7 +15,7 @@ public class ChatClient {
 
     public ChatClient() {}
 
-    public void startClient() {
+    public void startClient(ClientGUI gui, String username) {
         try {
             Socket socket = new Socket(HOST_NAME, HOST_PORT);
             System.out.println("Connected to the server " + socket.getRemoteSocketAddress());
@@ -29,15 +29,14 @@ public class ChatClient {
             );
 
             // PRINTS USERNAME REQUEST FROM SERVER TO CLIENT
-            String usernameRequest = reader.readLine();
-            System.out.println(usernameRequest);
+            //String usernameRequest = reader.readLine();
+            //System.out.println(usernameRequest);
 
-            Scanner scanner = new Scanner(System.in);
+            //Scanner scanner = new Scanner(System.in);
 
             // WRITES USERNAME TO SERVER FROM CLIENT
-            String selectUsername = scanner.nextLine();
-            setUsername(selectUsername);
-            writer.println(selectUsername);
+            setUsername(username);
+            writer.println(getUsername());
 
             inputThread = new Thread(new ReadThread(this, socket));
             inputThread.start();
@@ -64,6 +63,6 @@ public class ChatClient {
 
     public static void main(String[] args) {
         ChatClient chat = new ChatClient();
-        chat.startClient();
+        chat.startClient(null, "bob");
     }
 }

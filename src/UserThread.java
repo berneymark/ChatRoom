@@ -41,7 +41,7 @@ public class UserThread implements Runnable {
             writer = new PrintWriter(output, true);
 
             // WRITES USERNAME REQUEST FROM SERVER TO CLIENT
-            writer.println("Enter your username: ");
+            //writer.println("Enter your username: ");
 
             // PRINTS USERNAME TO SERVER FROM CLIENT
             username = reader.readLine();
