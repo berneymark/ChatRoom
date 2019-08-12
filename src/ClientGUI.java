@@ -7,15 +7,17 @@ public class ClientGUI {
     private JButton sendMessageButton;
     private JFrame frame;
     private JLabel appTitle;
+    private JList conversationList;
     private JPanel chatPanel;
     private JPanel chatToolbarPanel;
-    private JPanel connectionPanel;
+    private JPanel conversationPanel;
     private JPanel parentPanel;
     private JPanel sendMessageToolbarPanel;
     private JTextArea conversationText;
     private JTextField sendMessageField;
 
     private String clientUsername;
+    private String[] connectedUsers;
 
     public ClientGUI() {
         GUIInit();
@@ -23,7 +25,8 @@ public class ClientGUI {
         setChatToolBar();
         setConversationText();
         setSendMessageToolbar();
-        setConnectionPanel();
+        setConversationPanel();
+        setConversationList();
         frame.setVisible(true);
 
         clientUsername = JOptionPane.showInputDialog(null, "Username:");
@@ -74,11 +77,21 @@ public class ClientGUI {
         sendMessageToolbarPanel.add(sendMessageButton);
     }
 
-    private void setConnectionPanel() {
-        connectionPanel = new JPanel();
-        connectionPanel.setBackground(Color.GRAY);
-        connectionPanel.setPreferredSize(new Dimension(300, 600));
-        parentPanel.add(connectionPanel, BorderLayout.EAST);
+    private void setConversationPanel() {
+        conversationPanel = new JPanel();
+        conversationPanel.setLayout(new BorderLayout());
+        conversationPanel.setPreferredSize(new Dimension(300, 600));
+        parentPanel.add(conversationPanel, BorderLayout.EAST);
+    }
+
+    private void setConversationList() {
+        String[] testData = {"one", "two", "three", "four"};
+        conversationList = new JList(testData);
+        conversationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        conversationList.setLayoutOrientation(JList.VERTICAL);
+        conversationList.setVisibleRowCount(-1);
+
+        conversationPanel.add(conversationList, BorderLayout.CENTER);
     }
 
     public static void main(String[] args) {
