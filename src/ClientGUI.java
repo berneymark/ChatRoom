@@ -22,7 +22,7 @@ public class ClientGUI {
     private String clientUsername;
     private String[] connectedUsers;
 
-    public ClientGUI(ChatClient client) {
+    public ClientGUI() {
         GUIInit();
         setChatPanel();
         setChatToolBar();
@@ -32,11 +32,9 @@ public class ClientGUI {
         setConversationList();
         frame.setVisible(true);
 
-
-
         clientUsername = JOptionPane.showInputDialog(null, "Username:");
-        this.client = client;
-        client.startClient(this, clientUsername);
+        ChatClient client = new ChatClient(this);
+        client.startClient(clientUsername);
     }
 
     private void GUIInit() {
@@ -105,8 +103,12 @@ public class ClientGUI {
 
     }
 
+    public void printToChat(String message) {
+        conversationText.append(message + "\n");
+    }
+
     public static void main(String[] args) {
-        ClientGUI client = new ClientGUI(new ChatClient());
+        ClientGUI client = new ClientGUI();
     }
 
     private class GUIActionListeners implements ActionListener {

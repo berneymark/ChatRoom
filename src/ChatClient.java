@@ -9,13 +9,16 @@ public class ChatClient {
     public static final String HOST_NAME = "172.28.28.9";
     public static final int HOST_PORT = 7777;
 
+    private ClientGUI gui;
     private Thread inputThread;
     private Thread outputThread;
     private String username;
 
-    public ChatClient() {}
+    public ChatClient(ClientGUI gui) {
+        this.gui = gui;
+    }
 
-    public void startClient(ClientGUI gui, String username) {
+    public void startClient(String username) {
         try {
             Socket socket = new Socket(HOST_NAME, HOST_PORT);
             System.out.println("Connected to the server " + socket.getRemoteSocketAddress());
@@ -61,8 +64,12 @@ public class ChatClient {
         return username;
     }
 
+    public ClientGUI getGui() {
+        return gui;
+    }
+
     public static void main(String[] args) {
-        ChatClient chat = new ChatClient();
-        chat.startClient(null, "bob");
+        ChatClient chat = new ChatClient(null);
+        chat.startClient("bob");
     }
 }
