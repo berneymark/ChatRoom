@@ -49,7 +49,9 @@ public class UserThread implements Runnable {
 
             do {
                 clientMessage = reader.readLine();
-                server.broadcast(clientMessage + "\r\n", this);
+                if (clientMessage != null) {
+                    server.broadcast(clientMessage + "\r\n", this);
+                }
             } while (true);
 
 

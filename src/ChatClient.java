@@ -13,7 +13,6 @@ public class ChatClient {
     private PrintWriter writer;
     private Socket socket;
     private Thread inputThread;
-    private Thread outputThread;
 
     public ChatClient(ClientGUI gui) {
         this.gui = gui;
@@ -41,9 +40,6 @@ public class ChatClient {
 
             inputThread = new Thread(new ReadThread(this, reader));
             inputThread.start();
-
-            //outputThread = new Thread(new WriteThread(this, socket));
-            //outputThread.start();
         } catch (IOException e) {
             System.err.println("IOException : " + e.getMessage());
             e.printStackTrace();

@@ -118,16 +118,10 @@ public class ClientGUI {
 
     }
 
-    public JTextField getSendMessageField() {
-        return sendMessageField;
-    }
-
-    public JButton getSendMessageButton() {
-        return sendMessageButton;
-    }
-
     public void printToChat(String message) {
-        conversationText.append("\r\n" + message);
+        if (conversationText.getText().equals("") || conversationText == null) {
+            conversationText.append("\r\n" + message);
+        }
     }
 
     public static void main(String[] args) {
@@ -143,12 +137,21 @@ public class ClientGUI {
                 } else if (sendMessageField.getText() == null) {
                     JOptionPane.showMessageDialog(null, "This message null.");
                 } else {
-                    String message = sendMessageField.getText();
-                    conversationText.append(
-                            "\r\n" + "[" + clientUsername + "]: "
-                            + message);
-                    writer.println("[" + clientUsername + "]: " + message + "\r\n");
-                    sendMessageField.setText(null);
+                    if (conversationText.getText().equals("") || conversationText == null) {
+                        String message = sendMessageField.getText();
+                        conversationText.append(
+                                "[" + clientUsername + "]: "
+                                        + message);
+                        writer.println("[" + clientUsername + "]: " + message + "\r\n");
+                        sendMessageField.setText(null);
+                    } else {
+                        String message = sendMessageField.getText();
+                        conversationText.append(
+                                "\r\n" + "[" + clientUsername + "]: "
+                                        + message);
+                        writer.println("[" + clientUsername + "]: " + message + "\r\n");
+                        sendMessageField.setText(null);
+                    }
                 }
             }
         }

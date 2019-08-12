@@ -22,15 +22,14 @@ public class ReadThread implements Runnable {
     @Override
     public void run() {
         String response = "";
-        while (!response.equals("QUIT")) {
-            System.out.println("loop");
+        while (true) {
             try {
                 response = reader.readLine();
             } catch (IOException e) {
                 System.err.println("Error receiving message: " + e);
                 break;
             } finally {
-                if (!response.equals("") && response != null) {
+                if (!response.equals("")) {
                     System.out.println(response);
                     client.getGui().printToChat(response);
                 }
