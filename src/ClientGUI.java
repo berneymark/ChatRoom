@@ -103,8 +103,20 @@ public class ClientGUI {
 
     }
 
-    public void printToChat(String message) {
-        conversationText.append(message + "\n");
+    public JTextField getSendMessageField() {
+        return sendMessageField;
+    }
+
+    public JButton getSendMessageButton() {
+        return sendMessageButton;
+    }
+
+    public void printToChat(String message, boolean readOrWrite) {
+        if (readOrWrite) {
+            conversationText.append(message + "\n");
+        } else {
+
+        }
     }
 
     public static void main(String[] args) {

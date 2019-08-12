@@ -10,7 +10,7 @@ public class WriteThread implements Runnable {
     private ChatClient client;
     private Socket socket;
 
-    public WriteThread(Socket socket, ChatClient client) {
+    public WriteThread(ChatClient client, Socket socket) {
         this.socket = socket;
         this.client = client;
         scanner = new Scanner(System.in);
@@ -23,17 +23,6 @@ public class WriteThread implements Runnable {
         }
     }
 
-    public void sendServerMessage(String message) {
-        message = scanner.nextLine();
-        if (!message.equals("") | message != null) {
-            writer.println(message);
-        }
-    }
-
-    public void sendUserMessage(String message) {
-
-    }
-
     @Override
     public void run() {
         String message = "";
@@ -44,7 +33,9 @@ public class WriteThread implements Runnable {
                 e.printStackTrace();
             }
 
-            message = scanner.nextLine();
+            //message = scanner.nextLine();
+            message = client.getGui().getSendMessageField().getText();
+
             if (!message.equals("") | message != null) {
                 writer.println(message);
             }

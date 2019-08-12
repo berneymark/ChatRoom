@@ -44,7 +44,7 @@ public class ChatClient {
             inputThread = new Thread(new ReadThread(this, socket));
             inputThread.start();
 
-            outputThread = new Thread(new WriteThread(socket, this));
+            outputThread = new Thread(new WriteThread(this, socket));
             outputThread.start();
         } catch (IOException e) {
             System.err.println("IOException : " + e.getMessage());

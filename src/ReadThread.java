@@ -26,7 +26,7 @@ public class ReadThread implements Runnable {
                 response = reader.readLine();
                 if (!response.equals("")) {
                     System.out.println(response);
-                    client.getGui().printToChat(response);
+                    client.getGui().printToChat(response, true);
                 } else {
                     break;
                 }
