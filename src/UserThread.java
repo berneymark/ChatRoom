@@ -48,8 +48,18 @@ public class UserThread implements Runnable {
             String clientMessage = "";
             do {
                 clientMessage = reader.readLine();
-                if (clientMessage != null) {
+                String[] message = clientMessage.split(" ");
+                System.out.println("MESSAGE 0: " + message[0]);
+                System.out.println("MESSAGE 1: " + message[1]);
+
+                if (message[0].startsWith("@")) {
+                    String command = message[1];
+                    clientMessage = clientMessage.substring(clientMessage.indexOf(command));
+                    System.out.println("COMMAND" + clientMessage);
+                    server.broadcast("asdf", this);
+                } else if (message[0] != null) {
                     server.broadcast(clientMessage + "\r\n", this);
+                    System.out.println("NOT COMMAND" + clientMessage);
                 }
             } while (true);
         } catch (IOException e) {
