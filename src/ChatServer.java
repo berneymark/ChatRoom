@@ -55,6 +55,21 @@ public class ChatServer {
         }
     }
 
+    public void privateMessage(String message, String username, UserThread self) {
+        boolean success = false;
+
+        for (UserThread user : getUsers()) {
+            if (user.getUsername().equals(username)) {
+                user.sendMessage(message);
+                success = true;
+            }
+        }
+
+        if (!success) {
+            self.sendMessage("This user does not exist.");
+        }
+    }
+
     public void addUser(UserThread user) {
         userThreads.add(user);
     }

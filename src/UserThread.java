@@ -63,7 +63,7 @@ public class UserThread implements Runnable {
                             clientMessage += message[i] + " ";
                         }
                     }
-                    server.broadcast(clientMessage, null);
+                    server.privateMessage(clientMessage, command.substring(1), this);
                 // COMMAND = GET ACTIVE USERS
                 } else if (message[1].startsWith("$active")) {
                     server.broadcast(getConnectedUsers(), null);
