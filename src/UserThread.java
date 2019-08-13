@@ -13,10 +13,6 @@ public class UserThread implements Runnable {
         this.socket = socket;
     }
 
-    public void setUsername(String name) {
-        username = name;
-    }
-
     public String getUsername() {
         return username;
     }
