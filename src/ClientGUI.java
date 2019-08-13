@@ -3,18 +3,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
+import java.net.Socket;
 
-public class ClientGUI {
+public class ClientGUI extends JFrame {
     private ChatClient client;
 
-    private JFrame frame;
     private JPanel chatPanel;
     private JPanel chatToolbarPanel;
     private JPanel conversationPanel;
     private JPanel parentPanel;
     private JPanel sendMessageToolbarPanel;
 
+    private DefaultListModel<String> userListModel;
     private JButton sendMessageButton;
     private JLabel appTitle;
     private JList conversationList;
@@ -26,14 +28,7 @@ public class ClientGUI {
     private String[] connectedUsers;
 
     public ClientGUI() {
-        GUIInit();
-        setChatPanel();
-        setChatToolBar();
-        setConversationText();
-        setSendMessageToolbar();
-        setConversationPanel();
-        setConversationList();
-        frame.setVisible(true);
+        buildGUI();
 
         clientUsername = JOptionPane.showInputDialog(null, "Username:");
         ChatClient client = new ChatClient(this);
@@ -44,23 +39,30 @@ public class ClientGUI {
         } catch (IOException e) {
 
         }
+
+        new Thread(new UpdateUsernamesThread()).start();
     }
 
-    private void GUIInit() {
-        frame = new JFrame("Chat Room");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(900, 600);
-        frame.getContentPane();
+    private void buildGUI() {
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(900, 600);
+        this.setTitle("Chat Room");
+        this.getContentPane();
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(
-                dim.width / 2 - frame.getSize().width / 2,
-                dim.height / 2 - frame.getSize().height / 2
+        this.setLocation(
+                dim.width / 2 - this.getSize().width / 2,
+                dim.height / 2 - this.getSize().height / 2
         );
 
         parentPanel = new JPanel();
         parentPanel.setLayout(new BorderLayout());
-        frame.add(parentPanel);
+        this.add(parentPanel);
+
+        setChatPanel();
+        setConversationPanel();
+
+        setVisible(true);
     }
 
     private void setChatPanel() {
@@ -68,6 +70,10 @@ public class ClientGUI {
         chatPanel.setLayout(new BorderLayout());
         chatPanel.setPreferredSize(new Dimension(600, 600));
         parentPanel.add(chatPanel, BorderLayout.WEST);
+
+        setChatToolBar();
+        setConversationText();
+        setSendMessageToolbar();
     }
     
     private void setChatToolBar() {
@@ -81,7 +87,7 @@ public class ClientGUI {
     private void setConversationText() {
         conversationText = new JTextArea();
         conversationText.setEditable(false);
-        chatPanel.add(conversationText, BorderLayout.CENTER);
+        chatPanel.add(new JScrollPane(conversationText), BorderLayout.CENTER);
     }
 
     private void setSendMessageToolbar() {
@@ -102,11 +108,13 @@ public class ClientGUI {
         conversationPanel.setLayout(new BorderLayout());
         conversationPanel.setPreferredSize(new Dimension(300, 600));
         parentPanel.add(conversationPanel, BorderLayout.EAST);
+        
+        setConversationList();
     }
 
     private void setConversationList() {
-        String[] testData = {"one", "two", "three", "four"};
-        conversationList = new JList(testData);
+        userListModel = new DefaultListModel<>();
+        conversationList = new JList(userListModel);
         conversationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         conversationList.setLayoutOrientation(JList.VERTICAL);
         conversationList.setVisibleRowCount(-1);
@@ -114,14 +122,8 @@ public class ClientGUI {
         conversationPanel.add(conversationList, BorderLayout.CENTER);
     }
 
-    private void getConnectedUsers() {
-
-    }
-
     public void printToChat(String message) {
-        if (conversationText.getText().equals("") || conversationText == null) {
-            conversationText.append("\r\n" + message);
-        }
+        conversationText.append("\r\n" + message);
     }
 
     public static void main(String[] args) {
@@ -131,7 +133,7 @@ public class ClientGUI {
     private class GUIActionListeners implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == sendMessageButton) {
+            if (e.getSource() == sendMessageButton || e.getSource() == sendMessageField) {
                 if (sendMessageField.getText().equals("")) {
                     JOptionPane.showMessageDialog(null, "This message is empty.");
                 } else if (sendMessageField.getText() == null) {
@@ -150,9 +152,39 @@ public class ClientGUI {
                                 "\r\n" + "[" + clientUsername + "]: "
                                         + message);
                         writer.println("[" + clientUsername + "]: " + message + "\r\n");
+                        sendMessageField.selectAll();
+                        sendMessageField.requestFocus();
                         sendMessageField.setText(null);
                     }
                 }
+            }
+        }
+    }
+
+    private class UpdateUsernamesThread implements Runnable {
+        @Override
+        public void run() {
+            String[] usernames = new String[0];
+
+            try (Socket userSocket = new Socket(client.HOST_NAME, client.USER_PORT)) {
+                while (true) {
+                    try {
+                        ObjectInputStream objInStream = new ObjectInputStream(userSocket.getInputStream());
+                        usernames = (String[]) objInStream.readObject();
+                    } catch (ClassNotFoundException e) {
+                        System.err.println("Failed to retrieve usernames from the server.");
+                    } finally {
+                        if (connectedUsers != usernames) {
+                            connectedUsers = usernames;
+                            userListModel.clear();
+                            for (String user : connectedUsers) {
+                                userListModel.addElement(user);
+                            }
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                System.err.println("Failed to connect to the user socket.");
             }
         }
     }

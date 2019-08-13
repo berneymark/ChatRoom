@@ -7,6 +7,7 @@ import java.net.Socket;
 public class ChatClient {
     public static final String HOST_NAME = "172.28.28.9";
     public static final int HOST_PORT = 7777;
+    public static final int USER_PORT = 7070;
 
     private ClientGUI gui;
     private BufferedReader reader;

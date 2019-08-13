@@ -1,11 +1,14 @@
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.Observable;
 
 public class ChatServer {
-    public static final int PORT_NUMBER = 7777;
+    public final int HOST_PORT = 7777;
+    public final int USER_PORT = 7070;
     private boolean stopRequested;
 
     private LinkedList<UserThread> userThreads = new LinkedList<>();
@@ -15,10 +18,10 @@ public class ChatServer {
     }
 
     public void startServer() {
-        try (ServerSocket serverSocket  = new ServerSocket(PORT_NUMBER)) {
+        try (ServerSocket serverSocket  = new ServerSocket(HOST_PORT)) {
             System.out.println("Server started at " +
                     InetAddress.getLocalHost() +
-                    " on port " + PORT_NUMBER);
+                    " on port " + HOST_PORT);
             while (!stopRequested) {
                 Socket socket = serverSocket.accept();
                 System.out.println("Connection made with " + socket.getInetAddress());
@@ -26,9 +29,12 @@ public class ChatServer {
                 UserThread newUser = new UserThread(this, socket);
                 Thread newUserThread = new Thread(newUser);
                 newUserThread.start();
+
+                addUser(newUser);
+                sendUsernames();
             }
         } catch (IOException e) {
-            System.err.println("Error in the server:  " + e.getMessage());
+            System.err.println("Error in the server startup:  " + e.getMessage());
             e.printStackTrace();
             System.exit(-1);
         }
@@ -70,6 +76,17 @@ public class ChatServer {
         return usernames;
     }
 
+    public void sendUsernames() {
+        try (ServerSocket userSocket = new ServerSocket(USER_PORT)) {
+            Socket socket = userSocket.accept();
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.writeObject(getUsernames());
+        } catch (IOException e) {
+            System.err.println("Failed to output usernames.");
+            e.printStackTrace();
+        }
+    }
+
     public void requestStop() {
         stopRequested = true;
     }
@@ -77,5 +94,12 @@ public class ChatServer {
     public static void main(String[] args) {
         ChatServer cs = new ChatServer();
         cs.startServer();
+    }
+
+    private class SendUsernamesThread implements Runnable {
+        @Override
+        public void run() {
+
+        }
     }
 }

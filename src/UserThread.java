@@ -43,22 +43,15 @@ public class UserThread implements Runnable {
             username = reader.readLine();
             System.out.println( username + " has joined the server.");
 
+            server.sendUsernames();
+
             String clientMessage = "";
-
-            server.addUser(this);
-
             do {
                 clientMessage = reader.readLine();
                 if (clientMessage != null) {
                     server.broadcast(clientMessage + "\r\n", this);
                 }
             } while (true);
-
-
-            //server.broadcast(username + " has quit.", this);
-            //System.out.println(username + " has left the server.");
-
-            //server.removeUser(this);
         } catch (IOException e) {
             System.err.println("Error in UserThread: " + e.getMessage());
             e.printStackTrace();
