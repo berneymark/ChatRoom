@@ -66,7 +66,7 @@ public class UserThread implements Runnable {
                     server.privateMessage(clientMessage, command.substring(1), this);
                 // COMMAND = GET ACTIVE USERS
                 } else if (message[1].startsWith("$active")) {
-                    server.broadcast(getConnectedUsers(), null);
+                    server.privateMessage(getConnectedUsers(), username, this);
                 // COMMAND = DISCONNECT FROM SERVER
                 } else if (message[1].startsWith("$quit")) {
                     server.removeUser(this);
