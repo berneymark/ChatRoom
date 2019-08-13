@@ -81,10 +81,7 @@ public class ChatServer {
             Socket socket = userSocket.accept();
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             outputStream.writeObject(getUsernames());
-        } catch (IOException e) {
-            System.err.println("Failed to output usernames.");
-            e.printStackTrace();
-        }
+        } catch (IOException e) {}
     }
 
     public void requestStop() {
@@ -94,12 +91,5 @@ public class ChatServer {
     public static void main(String[] args) {
         ChatServer cs = new ChatServer();
         cs.startServer();
-    }
-
-    private class SendUsernamesThread implements Runnable {
-        @Override
-        public void run() {
-
-        }
     }
 }

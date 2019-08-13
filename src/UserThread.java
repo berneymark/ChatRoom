@@ -42,7 +42,8 @@ public class UserThread implements Runnable {
             writer = new PrintWriter(output, true);
 
             username = reader.readLine();
-            System.out.println( username + " has joined the server.");
+            System.out.println(username + " has joined the server.");
+            server.broadcast(username + " has joined the server.", this);
 
             server.sendUsernames();
 
@@ -66,6 +67,12 @@ public class UserThread implements Runnable {
                 // COMMAND = GET ACTIVE USERS
                 } else if (message[1].startsWith("$active")) {
                     server.broadcast(getConnectedUsers(), null);
+                // COMMAND = DISCONNECT FROM SERVER
+                } else if (message[1].startsWith("$quit")) {
+                    server.removeUser(this);
+                    System.out.println(username + " has disconnected.");
+                    server.broadcast(username + " has disconnected.", this);
+                    break;
                 // NO COMMAND = BROADCAST TO ALL USERS
                 } else if (message[1] != null) {
                     server.broadcast(clientMessage + "\r\n", this);
