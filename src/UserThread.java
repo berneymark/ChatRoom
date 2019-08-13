@@ -18,9 +18,14 @@ public class UserThread implements Runnable {
     }
 
     public String getConnectedUsers() {
-        if (server.hasUsers())
-            return "Connected users: " + server.getUsernames() + "\n";
-        else return "No other users connected\n";
+        if (server.hasUsers()) {
+            String connectedUsers = "Connected users: ";
+            for (String user : server.getUsernames()) {
+                connectedUsers += user + ", ";
+            }
+
+            return connectedUsers;
+        } else return "No other users connected\n";
     }
 
     public void sendMessage(String message) {
