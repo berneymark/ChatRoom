@@ -31,14 +31,12 @@ public class ClientGUI extends JFrame {
         buildGUI();
 
         clientUsername = JOptionPane.showInputDialog(null, "Username:");
-        ChatClient client = new ChatClient(this);
+        client = new ChatClient(this);
         client.startClient(clientUsername);
 
         try {
             writer = new PrintWriter(client.getSocket().getOutputStream(), true);
-        } catch (IOException e) {
-
-        }
+        } catch (IOException e) {}
 
         new Thread(new UpdateUsernamesThread()).start();
     }

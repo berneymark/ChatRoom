@@ -17,7 +17,6 @@ public class ChatClient {
 
     public ChatClient(ClientGUI gui) {
         this.gui = gui;
-
     }
 
     public void startClient(String username) {
@@ -65,14 +64,5 @@ public class ChatClient {
 
     public Socket getSocket() {
         return socket;
-    }
-
-    public PrintWriter getWriter() {
-        return writer;
-    }
-
-    public static void main(String[] args) {
-        ChatClient chat = new ChatClient(null);
-        chat.startClient("bob");
     }
 }

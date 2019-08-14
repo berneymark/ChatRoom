@@ -8,7 +8,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
-import java.util.Observable;
 
 public class ChatServer {
     public final int HOST_PORT = 7777;

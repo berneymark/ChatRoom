@@ -65,16 +65,16 @@ public class UserThread implements Runnable {
                     }
                     server.privateMessage(clientMessage, command.substring(1), this);
                 // COMMAND = GET ACTIVE USERS
-                } else if (message[1].startsWith("$active")) {
+                } else if (clientMessage.startsWith("$active")) {
                     server.privateMessage(getConnectedUsers(), username, this);
                 // COMMAND = DISCONNECT FROM SERVER
-                } else if (message[1].startsWith("$quit")) {
+                } else if (clientMessage.startsWith("$quit")) {
                     server.removeUser(this);
                     System.out.println(username + " has disconnected.");
                     server.broadcast(username + " has disconnected.", this);
                     break;
                 // NO COMMAND = BROADCAST TO ALL USERS
-                } else if (message[1] != null) {
+                } else if (clientMessage != null) {
                     server.broadcast(clientMessage + "\r\n", this);
                     System.out.println("NOT COMMAND" + clientMessage);
                 }
